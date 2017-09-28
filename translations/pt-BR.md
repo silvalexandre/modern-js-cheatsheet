@@ -1298,23 +1298,23 @@ fetchPostById('gzIrzeo64')
 - [Await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)
 - [Using async / await in express with node 8](https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016)
 
-## Glossary
+## Glossário
 
-### <a name="scope_def"></a> Scope
+### <a name="scope_def"></a> Escopo
 
-The context in which values and expressions are "visible," or can be referenced. If a variable or other expression is not "in the current scope," then it is unavailable for use.
+O contexto no qual valores e expressões são "visíveis", ou podem ser referenciadas. Se uma variável, ou outra expressão, não está no escopo atual, então ela não está disponível para uso.
 
-Source: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Scope)
+Fonte: [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Scope)
 
-### <a name="mutation_def"></a> Variable mutation
+### <a name="mutation_def"></a> Mutação de variáveis
 
-A variable is said to have been mutated when its initial value has changed afterward.
+Uma variável é tida como mutável quando seu valor inicial pode ser alterado posteriormente.
 
 ```js
 var myArray = [];
-myArray.push("firstEl") // myArray is being mutated
+myArray.push("firstEl") // myArray está sendo alterada.
 ```
 
-A variable is said to be *immutable* if it can't be mutated.
+Uma variável é tida como imutável quando não pode ser alterada.
 
-[Check MDN Mutable article](https://developer.mozilla.org/en-US/docs/Glossary/Mutable) for more details.
+[Confira o artigo MDN Mutable](https://developer.mozilla.org/en-US/docs/Glossary/Mutable) para mais detalhes.
