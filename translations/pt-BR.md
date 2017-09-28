@@ -92,81 +92,56 @@ Se você estiver com dificuldades em entender alguma coisa, eu sugiro que você 
     + [Escopo](#-scope)
     + [Mutação de variáveis](#-variable-mutation)
 
-## Notions
+## Noções
 
-### Variable declaration: var, const, let
+### Declaração de variáveis: var, const, let
 
-In JavaScript, there are three keywords available to declare a variable, and each has its differences. Those are ```var```, ```let``` and ```const```.
+Em JavaScript, há três palavras reservadas disponíveis para declarar uma variável, e cada uma tem suas diferenças. São elas: ```var```, ```let``` e ```const```.
 
-#### Short explanation
+#### Breve explicação
 
-Variables declared with ```const``` keyword can't be reassigned, while ```let``` and ```var``` can.
+Variáveis declaradas com a palavra ```const``` não podem ser reatribuídas, enquanto ```let``` e ```var``` podem.
 
-I recommend always declaring your variables with ```const``` by default, and with ```let``` if you need to *mutate* it or reassign it later.
+Eu recomendo sempre declarar as variáveis com  ```const``` por padrão, e com  ```let``` se você precisar modificar, ou reatribuir, a variável posteriormente.
 
-<table>
-  <tr>
-    <th></th>
-    <th>Scope</th>
-    <th>Reassignable</th>
-    <th>Mutable</th>
-   <th><a href="#tdz_sample">Temporal Dead Zone</a></th>
-  </tr>
-  <tr>
-    <th>const</th>
-    <td>Block</td>
-    <td>No</td>
-    <td><a href="#const_mutable_sample">Yes</a></td>
-    <td>Yes</td>
-  </tr>
-  <tr>
-    <th>let</th>
-    <td>Block</td>
-    <td>Yes</td>
-    <td>Yes</td>
-    <td>Yes</td>
-  </tr>
-   <tr>
-    <th>var</th>
-    <td>Function</td>
-    <td>Yes</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-</table>
+|             | Escopo | Reatribuível | Mutável | [Temporal Dead Zone](#tdz_sample) |
+|:-----------:|:------:|:------------:|:-------:|:---------------------------------:|
+| ```const``` | Bloco  | Não          | Sim     | Sim                               |
+| ```let```   | Bloco  | Sim          | Sim     | Sim                               |
+| ```var```   | Função | Sim          | Sim     | Não                               |
 
-#### Sample code
+#### Exemplo
 
 ```javascript
 const person = "Nick";
-person = "John" // Will raise an error, person can't be reassigned
+person = "John"; // Invocará um erro, a variável não pode ser reatribuída.
 ```
 
 ```javascript
 let person = "Nick";
 person = "John";
-console.log(person) // "John", reassignment is allowed with let
+console.log(person) // "John". A reatribuição é permitida com let.
 ```
 
-#### Detailed explanation
+#### Explicação detalhada
 
-The [*scope*](#scope_def) of a variable roughly means "where is this variable available in the code".
+O [*escopo*](#scope_def) de uma variável, de grosso modo significa onde aquela variável pertence ao código.
 
 ##### var
 
-```var``` declared variables are *function scoped*, meaning that when a variable is created in a function, everything in that function can access that variable. Besides, a *function scoped* variable created in a function can't be accessed outside this function.
+Variáveis declaradas com ```var``` pertencem ao escopo de função, ou seja, quando a variável é criada em uma função, tudo naquela função pode acessar a variável. Além disso, uma variável com escopo de função não pode ser acessada fora desta função.
 
-I recommend you to picture it as if an *X scoped* variable meant that this variable was a property of X.
+Eu recomendo você imaginar como se uma variável do *escopo de X* significasse que ela é uma propriedade de X.
 
 ```javascript
 function myFunction() {
   var myVar = "Nick";
-  console.log(myVar); // "Nick" - myVar is accessible inside the function
+  console.log(myVar); // "Nick" - myVar é acessada dentro da função.
 }
-console.log(myVar); // Throws a ReferenceError, myVar is not accessible outside the function.
+console.log(myVar); // Invoca um ReferenceError, pois myVar não pode ser acessada fora da função.
 ```
 
-Still focusing on the variable scope, here is a more subtle example:
+Ainda focando no escopo da variável, aqui está um exemplo mais sutil:
 
 ```javascript
 function myFunction() {
@@ -174,39 +149,39 @@ function myFunction() {
   if (true) {
     var myVar = "John";
     console.log(myVar); // "John"
-    // actually, myVar being function scoped, we just erased the previous myVar value "Nick" for "John"
+    // Na verdade, por myVar ser do escopo da função, o valor de "Nick" é trocado por "John".
   }
-  console.log(myVar); // "John" - see how the instructions in the if block affected this value
+  console.log(myVar); // "John" - Veja como as instruções no bloco da condição afetaram o valor.
 }
-console.log(myVar); // Throws a ReferenceError, myVar is not accessible outside the function.
+console.log(myVar); // Invoca um ReferenceError, pois myVar não pode ser acessada fora da função.
 ```
 
-Besides, *var* declared variables are moved to the top of the scope at execution. This is what we call [var hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var#var_hoisting).
+Dito isto, as declarações de variáveis com ```var``` são movidas ao topo do escopo na execução. Isto é o que chamamos de [*var hoisting*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var#var_hoisting).
 
-This portion of code:
+Este pedaço de código:
 
 ```js
-console.log(myVar) // undefined -- no error raised
+console.log(myVar) // undefined -- Não invoca erros.
 var myVar = 2;
 ```
 
-is understood at execution like:
+É interpreado como:
 
 ```js
 var myVar;
-console.log(myVar) // undefined -- no error raised
+console.log(myVar) // undefined -- Não invoca erros.
 myVar = 2;
 ```
 
 ##### let
 
-```var``` and ```let ``` are about the same, but ```let``` declared variables
+```var``` e ```let ``` são bem parecidos, mas variáveis declaradas com ```let```:
 
-- are *block scoped*
-- are **not** accessible before they are assigned
-- can't be re-declared in the same scope
+- pertencem ao escopo do bloco;
+- **não** são acessíveis antes de serem declaradas; e
+- não podem ser redeclaradas no mesmo escopo.
 
-Let's see the impact of block-scoping taking our previous example:
+Vamos conferir o impacto do escopo de bloco utilizando o exemplo anterior:
 
 ```javascript
 function myFunction() {
@@ -214,75 +189,73 @@ function myFunction() {
   if (true) {
     let myVar = "John";
     console.log(myVar); // "John"
-    // actually, myVar being block scoped, we just created a new variable myVar.
-    // this variable is not accessible outside this block and totally independent
-    // from the first myVar created !
+    // Na verdade, myVar pertencendo ao escopo do bloco, é criada uma nova variável myVar.
+    // Esta variável não pode ser acessada fora do bloco e é independente da primeira myVar criada.
   }
-  console.log(myVar); // "Nick", see how the instructions in the if block DID NOT affect this value
+  console.log(myVar); // "Nick" - Veja como as instruções no bloco da condição NÃO afetaram este valor.
 }
-console.log(myVar); // Throws a ReferenceError, myVar is not accessible outside the function.
+console.log(myVar); // // Invoca um ReferenceError, pois myVar não pode ser acessada fora da função.
 ```
 
-<a name="tdz_sample"></a> Now, what it means for *let* (and *const*) variables for not being accessible before being assigned:
+<a name="tdz_sample"></a> Agora, o significado de variáveis declaradas com ```let``` (e ```const```) não serem acessíveis antes de serem declaradas:
 
 ```js
-console.log(myVar) // raises a ReferenceError !
+console.log(myVar) // Invoca um ReferenceError.
 let myVar = 2;
 ```
 
-By contrast with *var* variables, if you try to read or write on a *let* or *const* variable before they are assigned an error will be raised. This phenomenon is often called [*Temporal dead zone*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let) or *TDZ*.
+Em contraste com variáveis declaradas com ```var```, se você tentar ler ou escrever em uma variável  ```let``` ou ```const``` antes de serem declaradas, um erro será invocado. Este comportamento é comumente chamado de [*Temporal dead zone*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let) ou *TDZ*.
 
-> **Note:** Technically, *let* and *const* variables declarations are being hoisted too, but not their assignation. Since they're made so that they can't be used before assignation, it intuitively feels like there is no hoisting, but there is. Find out more on this [very detailed explanation here](http://jsrocks.org/2015/01/temporal-dead-zone-tdz-demystified) if you want to know more.
+> **Nota:** Tecnicamente, variáveis declaradas com ```let``` e ```const``` são içadas também, mas não suas atribuições. Desde que elas são tratadas deste modo, não podendo serem utilizadas antes de suas atribuições, parece que não há içamento, mas há. Você pode entender melhor com esta [explicação mais detalhada aqui](http://jsrocks.org/2015/01/temporal-dead-zone-tdz-demystified), caso deseje.
 
-In addition, you can't re-declare a *let* variable:
+Em contrapartida, você não pode redeclarar uma variável ```let```:
 
 ```js
 let myVar = 2;
-let myVar = 3; // Raises a SyntaxError
+let myVar = 3; // Invoca um SyntaxError.
 ```
 
 ##### const
 
-```const``` declared variables behave like *let* variables, but also they can't be reassigned.
+Variáveis declaradas com ```const``` são parecidas com variáveis ```let```, mas elas não podem ser reatribuídas.
 
-To sum it up, *const* variables:
-
-- are *block scoped*
-- are not accessible before being assigned
-- can't be re-declared in the same scope
-- can't be reassigned
+Para simplificar, variáveis ```const```:
+- pertencem ao escopo do bloco;
+- não são acessíveis antes de serem declaradas;
+- não podem ser redeclaradas no mesmo escopo; e
+- não podem ser reatribuídas.
 
 ```js
 const myVar = "Nick";
-myVar = "John" // raises an error, reassignment is not allowed
+myVar = "John" // Invoca um erro, a reatribuição não é permitida.
 ```
 
 ```js
 const myVar = "Nick";
-const myVar = "John" // raises an error, re-declaration is not allowed
+const myVar = "John" // Invoca um erro, a redeclaração não é permitida.
 ```
 
-<a name="const_mutable_sample"></a> But there is a subtlety : ```const``` variables are not [**immutable**](#mutation_def) ! Concretely, it means that *object* and *array* ```const``` declared variables **can** be mutated.
+<a name="const_mutable_sample"></a> Mas há uma sutileza: variáveis declaradas com ```const``` não são [**imutáveis**](#mutation_def)! Ou seja, objetos e arrays declarados com ```const``` **podem** ter seus valores modificados.
 
-For objects:
+Para objetos:
 ```js
 const person = {
   name: 'Nick'
 };
-person.name = 'John' // this will work ! person variable is not completely reassigned, but mutated
-console.log(person.name) // "John"
-person = "Sandra" // raises an error, because reassignment is not allowed with const declared variables
+person.name = 'John'; // Irá funcionar. A variável person não é completamente reatribuída, mas modificada.
+console.log(person.name); // "John"
+person = "Sandra"; // Invoca um erro, pois a reatribuição não é permitida em variáveis declaradas com const.
 ```
 
-For arrays:
+Para arrays:
 ```js
 const person = [];
-person.push('John'); // this will work ! person variable is not completely reassigned, but mutated
+person.push('John'); // Irá funcionar. A variável person não é completamente reatribuída, mas modificada.
 console.log(person[0]) // "John"
-person = ["Nick"] // raises an error, because reassignment is not allowed with const declared variables
+person = ["Nick"] // Invoca um erro, pois a reatribuição não é permitida em variáveis declaradas com const.
 ```
 
-#### External resource
+#### Material complementar
 
 - [How let and const are scoped in JavaScript - WesBos](http://wesbos.com/javascript-scoping/)
 - [Temporal Dead Zone (TDZ) Demystified](http://jsrocks.org/2015/01/temporal-dead-zone-tdz-demystified)
