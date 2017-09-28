@@ -975,22 +975,20 @@ If it fails, *reject* is executed and the function passed as ```.catch``` parame
 - [JavaScript Promises: an Introduction - Jake Archibald](https://developers.google.com/web/fundamentals/getting-started/primers/promises)
 - [Promise documentation - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-### Template literals
+### *Template strings*
 
-Template literals is an [*expression interpolation*](https://en.wikipedia.org/wiki/String_interpolation) for single and multiple-line strings.
+*Template strings* é uma [*expression interpolation*](https://en.wikipedia.org/wiki/String_interpolation) para *strings* de uma ou mais linhas.
 
-In other words, it is a new string syntax in which you can conveniently use any JavaScript expressions (variables for instance).
+Em outras palavras, é uma nova sintaxe de *string*, em que você pode convenientemente utilizar qualquer expressão em JavaScript (variaveis por exemplo).
 
-#### Sample code
+#### Exemplo
 
 ```js
 const name = "Nick";
-`Hello ${name}, the following expression is equal to four : ${2+2}`;
-
-// Hello Nick, the following expression is equal to four: 4
+console.log(`Hello ${name}, the following expression is equal to four : ${2+2}`); // Hello Nick, the following expression is equal to four: 4
 ```
 
-#### External resources
+#### Material complementar
 
 - [String interpolation - ES6 Features](http://es6-features.org/#StringInterpolation)
 - [ES6 Template Strings - Addy Osmani](https://developers.google.com/web/updates/2015/01/ES6-Template-Strings)
